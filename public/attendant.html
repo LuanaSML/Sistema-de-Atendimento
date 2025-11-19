@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Painel do Atendente</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="brand">Painel do Atendente</div></header>
+  <main class="container">
+    <section class="panel">
+      <h2>Senha chamada</h2>
+      <div id="currentCalled" class="called">--</div>
+      <button id="nextBtn" class="btn">CHAMAR PRÓXIMO</button>
+    </section>
+
+    <section class="queue-stats">
+      <h3>Filas</h3>
+      <ul>
+        <li>Prioritária: <span id="qP">0</span></li>
+        <li>Exames: <span id="qE">0</span></li>
+        <li>Geral: <span id="qG">0</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const socket = io();
+
+    socket.on('queue-updated', (counts) => {
+      document.getElementById('qP').textContent = counts.P;
+      document.getElementById('qE').textContent = counts.E;
+      document.getElementById('qG').textContent = counts.G;
+    });
+
+    socket.on('called', (data) => {
+      const ticket = data.ticket;
+      document.getElementById('currentCalled').textContent = ticket ? ticket.label : '--';
+      if (ticket) {
+        // toca o bep foda
+        try { new Audio('data:audio/wav;base64,//uQZAAAAAAAAAAAAAAAAAAAAAA==').play(); } catch(e){}
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', async () => {
+      const res = await fetch('/api/next', { method: 'POST' });
+      const data = await res.json();
+      const ticket = data.ticket;
+      document.getElementById('currentCalled').textContent = ticket ? ticket.label : 'Sem chamadas';
+    });
+
+    // Fetch current on load
+    fetch('/api/current').then(r=>r.json()).then(d=>{
+      document.getElementById('currentCalled').textContent = d.ticket ? d.ticket.label : '--';
+    });
+
+    // as vezes atualiza essa porra entre 3 segundos 
+    setInterval(()=>{
+      fetch('/api/queue').then(r=>r.json()).then(c=>{
+        document.getElementById('qP').textContent = c.P;
+        document.getElementById('qE').textContent = c.E;
+        document.getElementById('qG').textContent = c.G;
+      });
+    }, 3000);
+  </script>
+</body>
+</html>

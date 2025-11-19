@@ -1,0 +1,17 @@
+body { font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#123; }
+.topbar { background:#205776; color:#fff; padding:16px; }
+.brand { font-weight:bold; }
+.container { padding:24px; }
+.cards { display:flex; gap:12px; }
+.card { display:inline-block; padding:20px 30px; background:#287191; color:#fff; border-radius:8px; text-decoration:none; }
+.buttons { display:flex; gap:20px; justify-content:center; margin:40px 0; }
+.btn { background:#2b6b8b; color:#fff; padding:14px 22px; border:none; border-radius:10px; cursor:pointer; }
+.btn.small { padding:8px 12px; }
+.modal { position:fixed; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); }
+.modal.hidden { display:none; }
+.modal-content { background:#fff; padding:24px; border-radius:12px; text-align:center; min-width:260px; }
+.ticket-label { font-size:18px; margin:12px 0; font-weight:bold; }
+.called { font-size:32px; font-weight:bold; margin:12px 0; }
+.queue-stats ul { list-style:none; padding:0; }
+.queue-stats li { margin:6px 0; }
+.panel { margin-bottom:24px; }

@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tire sua senha</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="brand">Tire sua senha</div></header>
+  <main class="container">
+    <div class="buttons">
+      <button class="btn" data-type="PRIORITARIA">PRIORITÁRIA</button>
+      <button class="btn" data-type="EXAMES">EXAMES</button>
+      <button class="btn" data-type="GERAL">GERAL</button>
+    </div>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>SUA SENHA É:</h2>
+        <div id="ticketLabel" class="ticket-label"></div>
+        <button id="confirmBtn" class="btn small">CONFIRMAR</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function take(type) {
+      const res = await fetch('/api/take', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ type }) });
+      const data = await res.json();
+      return data.ticket;
+    }
+
+    document.querySelectorAll('.btn[data-type]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const type = btn.dataset.type;
+        const ticket = await take(type);
+        document.getElementById('ticketLabel').textContent = ticket.label;
+        document.getElementById('modal').classList.remove('hidden');
+      });
+    });
+
+    document.getElementById('confirmBtn').addEventListener('click', () => {
+      document.getElementById('modal').classList.add('hidden');
+    });
+  </script>
+</body>
+</html>
