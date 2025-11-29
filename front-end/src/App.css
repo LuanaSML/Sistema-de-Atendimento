@@ -52,11 +52,11 @@
   flex: 1;
   display: flex;
   padding: 3rem;
-  padding-top: 4rem;
+  padding-top: 7rem;
   max-width: 1400px;
   max-height: calc(100vh - 200px);
   margin: 0 auto;
-  margin-top: 2rem;
+  margin-top: 4rem;
   width: 100%;
   box-sizing: border-box;
   justify-content: center;
