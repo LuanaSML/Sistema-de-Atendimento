@@ -29,11 +29,19 @@ function AdminArea({ onBack, senhas, senhasChamadas }) {
   }, [senhas])
 
   useEffect(() => {
-    atualizarTempoRestante()
+    // Chamar uma vez após o mount usando setTimeout
+    const timeout = setTimeout(() => {
+      atualizarTempoRestante()
+    }, 0)
+    
     const interval = setInterval(() => {
       atualizarTempoRestante()
     }, 1000)
-    return () => clearInterval(interval)
+    
+    return () => {
+      clearTimeout(timeout)
+      clearInterval(interval)
+    }
   }, [atualizarTempoRestante])
 
   const formatarData = (data) => {
